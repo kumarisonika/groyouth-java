@@ -1,5 +1,6 @@
 package com.groyouth.backend.controller;
 
+import com.groyouth.backend.dto.LoginRequest;
 import com.groyouth.backend.dto.SignupRequest;
 import com.groyouth.backend.model.User;
 import com.groyouth.backend.service.UserService;
@@ -20,5 +21,10 @@ public class AuthController {
     @PostMapping("/signup")
     public User signup(@RequestBody SignupRequest request){
         return userService.signup(request);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest request){
+        return userService.login(request);
     }
 }
