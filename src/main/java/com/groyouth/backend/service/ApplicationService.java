@@ -35,7 +35,16 @@ public class ApplicationService {
         app.setCandidate(candidate);
         app.setStatus(ApplicationStatus.APPLIED);
         app.setAppliedAt(LocalDateTime.now());
-
         return applicationRepository.save(app);
     }
+
+    public Application updateStatus(Long applicationId, ApplicationStatus status){
+        Application app = applicationRepository.findById(applicationId)
+                .orElseThrow(()-> new RuntimeException("Application not found"));
+
+        app.setStatus(status);
+        return applicationRepository.save(app);
+    }
+
+
 }
