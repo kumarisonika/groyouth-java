@@ -8,6 +8,8 @@ import com.groyouth.backend.repository.CompanyRepository;
 import com.groyouth.backend.repository.JobRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class JobService {
     private final JobRepository jobRepository;
@@ -29,5 +31,9 @@ public class JobService {
         job.setExperienceRequired(request.experienceRequired);
         job.setCompany(company);
         return jobRepository.save(job);
+    }
+
+    public List<Job> search(String keyword, String location, Integer exp){
+        return jobRepository.search(keyword,location,exp);
     }
 }
