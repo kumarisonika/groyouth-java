@@ -1,5 +1,7 @@
 package com.groyouth.backend.service;
 
+import com.groyouth.backend.event.JobAppliedEvent;
+import com.groyouth.backend.kafka.JobEventProducer;
 import com.groyouth.backend.model.Application;
 import com.groyouth.backend.model.ApplicationStatus;
 import com.groyouth.backend.model.Job;
@@ -15,12 +17,14 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final JobRepository jobRepository;
     private final UserRepository userRepository;
+    private final JobEventProducer jobEventProducer;
 
     public ApplicationService(ApplicationRepository applicationRepository,
-                              JobRepository jobRepository, UserRepository userRepository){
+                              JobRepository jobRepository, UserRepository userRepository, JobEventProducer jobEventProducer){
         this.applicationRepository= applicationRepository;
         this.jobRepository= jobRepository;
         this.userRepository= userRepository;
+        this.jobEventProducer= jobEventProducer;
     }
 
     public Application apply(Long jobId, Long candidateId){
@@ -35,7 +39,15 @@ public class ApplicationService {
         app.setCandidate(candidate);
         app.setStatus(ApplicationStatus.APPLIED);
         app.setAppliedAt(LocalDateTime.now());
-        return applicationRepository.save(app);
+        applicationRepository.save(app);
+
+        JobAppliedEvent event = new JobAppliedEvent();
+        event.jobId = job.getId();
+        event.candidateId = candidate.getId();
+        event.candidateEmail = candidate.getEmail();
+        jobEventProducer.publishJobApplied(event);
+
+        return app;
     }
 
     public Application updateStatus(Long applicationId, ApplicationStatus status){
