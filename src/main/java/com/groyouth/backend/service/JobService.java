@@ -1,11 +1,11 @@
 package com.groyouth.backend.service;
 
-
 import com.groyouth.backend.dto.JobRequest;
 import com.groyouth.backend.model.Company;
 import com.groyouth.backend.model.Job;
 import com.groyouth.backend.repository.CompanyRepository;
 import com.groyouth.backend.repository.JobRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +33,7 @@ public class JobService {
         return jobRepository.save(job);
     }
 
+    @Cacheable(value= "jobSearch", key="#keyword + '-' + #location+ '-'+ #exp")
     public List<Job> search(String keyword, String location, Integer exp){
         return jobRepository.search(keyword,location,exp);
     }

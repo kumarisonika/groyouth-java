@@ -10,12 +10,15 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "TEXT")
     private String title;
 
-    @Column(length = 2000)
+    @Column(length = 2000, columnDefinition = "TEXT")
     private  String description;
 
+    @Column(columnDefinition = "TEXT")
     private String location;
+
 
     private int experienceRequired;
 
