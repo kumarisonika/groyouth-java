@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.time.Instant;
 
 @RestController
@@ -41,16 +40,12 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public AuthResponse refresh(@RequestBody String refreshToken) {
-
         RefreshToken rt = refreshTokenRepository.findByToken(refreshToken)
                 .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
-
         if (rt.isRevoked() || rt.getExpiresAt().isBefore(Instant.now())) {
             throw new RuntimeException("Refresh token expired");
         }
-
         String newAccessToken = jwtUtil.generateToken(rt.getUser().getEmail());
-
         return new AuthResponse(newAccessToken, refreshToken);
     }
 

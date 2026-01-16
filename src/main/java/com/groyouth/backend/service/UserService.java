@@ -36,7 +36,6 @@ public class UserService {
         User user = new User();
         user.setName(request.name);
         user.setEmail(request.email);
-
         user.setPassword(passwordEncoder.encode(request.password));
 
 //        user.setPassword(request.password);
