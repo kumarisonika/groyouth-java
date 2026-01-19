@@ -20,7 +20,8 @@ public class JobService {
         this.companyRepository= companyRepository;
     }
 
-    public Job createJob(Long companyId, JobRequest request){
+    public Job createJob(Long companyId,String recruiterEmail, JobRequest request){
+
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new RuntimeException("Company not found"));
 

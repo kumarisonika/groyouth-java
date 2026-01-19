@@ -17,8 +17,8 @@ public class CompanyService {
         this.userRepository= userRepository;
     }
 
-     public Company createCompany(Long recruiterId, CompanyRequest request){
-         User recruiter = userRepository.findById(recruiterId).orElseThrow(() -> new RuntimeException("Recruiter not found"));
+     public Company createCompany(String recruiterEmail, CompanyRequest request){
+         User recruiter = userRepository.findByEmail(recruiterEmail).orElseThrow(() -> new RuntimeException("Recruiter not found"));
          Company company= new Company();
          company.setName(request.name);
          company.setDescription(request.description);

@@ -3,6 +3,8 @@ package com.groyouth.backend.controller;
 import com.groyouth.backend.dto.CompanyRequest;
 import com.groyouth.backend.model.Company;
 import com.groyouth.backend.service.CompanyService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,10 +17,14 @@ public class CompanyController {
         this.companyService= companyService;
     }
 
-    @PostMapping("/{recruiterId}")
-    public Company createCompany(@PathVariable Long recruiterId,
-                                 @RequestBody CompanyRequest request){
-        return companyService.createCompany(recruiterId, request);
+    @PreAuthorize("hasRole('RECRUITER')")
+    @PostMapping
+    public Company createCompany(@RequestBody CompanyRequest request){
+        String recruiterEmail =
+                SecurityContextHolder.getContext()
+                        .getAuthentication()
+                        .getName();
+        return companyService.createCompany(recruiterEmail, request);
     }
 
 }

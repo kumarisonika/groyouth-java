@@ -49,7 +49,7 @@ public class AuthController {
         if (rt.isRevoked() || rt.getExpiresAt().isBefore(Instant.now())) {
             throw new RuntimeException("Refresh token expired");
         }
-        String newAccessToken = jwtUtil.generateToken(rt.getUser().getEmail());
+        String newAccessToken = jwtUtil.generateToken(rt.getUser().getEmail(), rt.getUser().getRole().name());
         return new AuthResponse(newAccessToken, refreshToken);
     }
 

@@ -15,9 +15,10 @@ public class JwtUtil {
                     "my-super-secret-key-which-is-at-least-32-bytes".getBytes()
             );
 
-    public String generateToken(String email) {
+    public String generateToken(String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(key)
@@ -26,8 +27,9 @@ public class JwtUtil {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser()
+                Jwts.parserBuilder()
                     .setSigningKey(key)
+                    .build()
                     .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
@@ -36,11 +38,21 @@ public class JwtUtil {
     }
 
     public String extractEmail(String token) {
-        return Jwts.parser()
+        return Jwts.parserBuilder()
                 .setSigningKey(key)
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public String extractRole(String token){
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role", String.class);
     }
 }
 

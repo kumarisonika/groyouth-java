@@ -27,11 +27,11 @@ public class ApplicationService {
         this.jobEventProducer= jobEventProducer;
     }
 
-    public Application apply(Long jobId, Long candidateId){
+    public Application apply(Long jobId, String candidateEmail){
         Job job = jobRepository.findById(jobId).orElseThrow(()->
                 new RuntimeException("Job not found"));
 
-        User candidate = userRepository.findById(candidateId).orElseThrow(()->
+        User candidate = userRepository.findByEmail(candidateEmail).orElseThrow(()->
                 new RuntimeException("Candidate not found"));
 
         Application app = new Application();
@@ -50,7 +50,7 @@ public class ApplicationService {
         return app;
     }
 
-    public Application updateStatus(Long applicationId, ApplicationStatus status){
+    public Application updateStatus(Long applicationId, ApplicationStatus status, String recruiterEmail){
         Application app = applicationRepository.findById(applicationId)
                 .orElseThrow(()-> new RuntimeException("Application not found"));
 

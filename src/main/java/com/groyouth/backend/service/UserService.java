@@ -51,7 +51,7 @@ public class UserService {
             throw new RuntimeException("Invalid Password");
         }
 
-        String accessToken = jwtUtil.generateToken(user.getEmail());
+        String accessToken = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
         String refreshToken = UUID.randomUUID().toString();
 
         RefreshToken rt = new RefreshToken();
