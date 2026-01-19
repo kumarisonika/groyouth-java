@@ -37,6 +37,10 @@ public class AuthController {
     public AuthResponse login(@RequestBody LoginRequest request){
         return userService.login(request);
     }
+//   token for testing {
+//        "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyd0Bncm95b3V0aC5jb20iLCJpYXQiOjE3Njg4MzE2MDMsImV4cCI6MTc2ODkxODAwM30.vAp2YUd8sEmm5XwZacuvCHFkt1vHeMeRhwWKLri50jc",
+//            "refreshToken": "d122a3b7-e3e1-41e6-b413-91d0c6d6cb10"
+//    }
 
     @PostMapping("/refresh")
     public AuthResponse refresh(@RequestBody String refreshToken) {

@@ -28,8 +28,8 @@ public class UserService {
                        RefreshTokenRepository refreshTokenRepository){
         this.userRepository= userRepository;
         this.passwordEncoder=passwordEncoder;
-        this.jwtUtil= jwtUtil;
-        this.refreshTokenRepository= refreshTokenRepository;
+        this.jwtUtil=jwtUtil;
+        this.refreshTokenRepository=refreshTokenRepository;
     }
 
     public User signup(SignupRequest request) {
@@ -52,7 +52,6 @@ public class UserService {
         }
 
         String accessToken = jwtUtil.generateToken(user.getEmail());
-
         String refreshToken = UUID.randomUUID().toString();
 
         RefreshToken rt = new RefreshToken();
